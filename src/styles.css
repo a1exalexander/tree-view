@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 4px;
+}
+
+.folder {
+  padding: 4px;
+  border: 1px solid transparent;
+}
+
+.folder--opened {
+  background-color: rgba(197, 197, 197, 0.1);
+  border: 1px solid black;
+}
+
+
+.folder__header {
+  display: flex;
+  align-items: center;
+}
+
+.folder__button {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  margin-right: 20px;
+}
+
+.folder__triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid black;
+  margin-right: 6px;
+  transform: rotate(-90deg);
+}
+
+.folder--opened > .folder__header > .folder__button > .folder__triangle {
+  transform: rotate(0deg);
+}
+
+.folder__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.folder__children {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  border: 1px solid transparent;
+}
+
+.file__name {
+  margin-right: 12px;
+}
+
+
+.folder--highlighted,
+.file--highlighted {
+  border-color: blue;
+}
