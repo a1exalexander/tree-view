@@ -1,5 +1,8 @@
 import { APITreeNode, APIUpdateEntitie } from './types';
 
+const baseAppUrl = import.meta.env.BASE_URL;
+const baseApiUrl = `${baseAppUrl}api`;
+
 interface IApiService {
   baseUrl: string;
   userId?: string;
@@ -66,4 +69,4 @@ export class ApiService implements IApiService {
   };
 }
 
-export const apiService = new ApiService('http://localhost:5173/api');
+export const apiService = new ApiService(baseApiUrl);
