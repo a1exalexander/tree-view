@@ -1,6 +1,6 @@
 import { TreeNode } from '.';
 import { APITreeNode, APITreeNodeType, apiService } from '../api';
-import { findClosestFolderId, matchSubstring, randomId } from '../utils';
+import { findClosestTreeNodeId, matchSubstring, randomId } from '../utils';
 import { TreeFile } from './File';
 import { TreeFolder } from './Folder';
 
@@ -52,7 +52,7 @@ export class Tree implements ITree {
 
   private onDelete = async (event: Event) => {
     const el = event.target as HTMLElement;
-    const id = findClosestFolderId(el);
+    const id = findClosestTreeNodeId(el);
 
     if (id) {
       await apiService.deleteNode(id);
@@ -67,7 +67,7 @@ export class Tree implements ITree {
   private onMove = (event: Event) => {
     const $select = event.target as HTMLSelectElement;
     const newParentId = $select.value;
-    const id = findClosestFolderId($select);
+    const id = findClosestTreeNodeId($select);
     const node = this.findNode(id);
     if (!id || !node) {
       throw new Error('Node id not found');
@@ -81,7 +81,7 @@ export class Tree implements ITree {
 
   private onOpenToggle = (event: Event) => {
     const $el = event.target as HTMLElement;
-    const folderId = findClosestFolderId($el);
+    const folderId = findClosestTreeNodeId($el);
 
     const node = this.findNode(folderId);
 
@@ -97,7 +97,7 @@ export class Tree implements ITree {
       .getAttribute('data-action')
       ?.replace('add-', '') as string as APITreeNodeType;
 
-    const folderId = findClosestFolderId($el);
+    const folderId = findClosestTreeNodeId($el);
     const node = this.findNode(folderId);
     const newNode = this.createNode({
       parentId: folderId,
