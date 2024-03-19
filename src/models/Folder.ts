@@ -17,7 +17,7 @@ export class TreeFolder extends TreeNode implements ITreeFolder {
 
   render = (folders: Pick<ITreeNode, 'id' | 'name'>[], children?: string, search?: string) => {
     return `
-<div class="folder ${clsx({
+<div draggable="true" data-action="folder" class="folder ${clsx({
       'folder--opened': this.isOpen,
       'folder--highlighted': this.isHighlighted,
     })}" data-id="${this.id}">

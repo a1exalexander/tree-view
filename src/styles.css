@@ -15,6 +15,10 @@ button {
   gap: 4px;
 }
 
+.tree__body {
+  padding: 20px 0;
+}
+
 .folder {
   padding: 4px;
   border: 1px solid transparent;
@@ -24,7 +28,6 @@ button {
   background-color: rgba(197, 197, 197, 0.1);
   border: 1px solid black;
 }
-
 
 .folder__header {
   display: flex;
@@ -75,7 +78,6 @@ button {
 .file__name {
   margin-right: 12px;
 }
-
 
 .folder--highlighted,
 .file--highlighted {

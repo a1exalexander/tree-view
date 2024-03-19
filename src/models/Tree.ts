@@ -148,6 +148,43 @@ export class Tree implements ITree {
     this.render();
   };
 
+  private onDragStart = (event: Event) => {
+    const dragEvent = event as DragEvent;
+    const nodeId = findClosestTreeNodeId(dragEvent.target as HTMLElement);
+    if (!nodeId) {
+      return;
+    }
+    dragEvent.dataTransfer?.setData('text/plain', nodeId);
+  };
+
+  private onDrop = (event: Event) => {
+    const dragEvent = event as DragEvent;
+    dragEvent.preventDefault();
+    const childId = dragEvent.dataTransfer?.getData('text/plain');
+    const childNode = this.findNode(childId);
+    const parentId =
+      findClosestTreeNodeId(dragEvent.target as HTMLElement) || null;
+    const parentNode = this.findNode(parentId);
+    if (!childNode) {
+      return;
+    }
+    if (parentNode instanceof TreeFolder) {
+      parentNode.isOpen = true;
+    }
+    childNode.parentId = parentId;
+    childNode.highlight();
+
+    this.render();
+  };
+
+  private onDragOver = (event: Event) => {
+    event.preventDefault();
+  };
+
+  private onDragEnter = (event: Event) => {
+    event.preventDefault();
+  };
+
   private generateTreeElement(parents?: ITree['nodes']): string {
     if (!parents) {
       return this.generateTreeElement(this.nodes.filter((n) => !n.parentId));
@@ -192,6 +229,15 @@ export class Tree implements ITree {
         case 'search':
           el.removeEventListener('input', this.onSearch);
           break;
+        case 'folder':
+          el.removeEventListener('dragstart', this.onDragStart);
+          el.removeEventListener('drop', this.onDrop);
+          el.removeEventListener('dragenter', this.onDragEnter);
+          el.removeEventListener('dragover', this.onDragOver);
+          break;
+        case 'file':
+          el.removeEventListener('dragstart', this.onDragStart);
+          break;
       }
     });
   };
@@ -219,6 +265,15 @@ export class Tree implements ITree {
         case 'search':
           el.addEventListener('input', this.onSearch);
           break;
+        case 'folder':
+          el.addEventListener('dragstart', this.onDragStart);
+          el.addEventListener('drop', this.onDrop);
+          el.addEventListener('dragenter', this.onDragEnter);
+          el.addEventListener('dragover', this.onDragOver);
+          break;
+        case 'file':
+          el.addEventListener('dragstart', this.onDragStart);
+          break;
       }
     });
   };
@@ -230,8 +285,13 @@ export class Tree implements ITree {
         <button data-action="add-folder" class="tree__add">Add folder</button>
         <button data-action="add-file" class="tree__add">Add file</button>
       </div>
-      <div class="tree__body" id="${id}">
-        ${this.generateTreeElement()}
+      
+      <div data-action="folder" class="tree__body">
+        <p>You also can drag and drop files or folders</p>
+        <div id="${id}">
+          
+          ${this.generateTreeElement()}
+        </div>
       </div>
     `;
   };

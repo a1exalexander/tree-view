@@ -14,7 +14,7 @@ export class TreeFile extends TreeNode implements ITreeFile {
 
   render(folders: Pick<ITreeNode, 'id' | 'name'>[], search?: string) {
     return `
-<div class="file ${clsx({
+<div draggable="true" data-action="file" class="file ${clsx({
       'file--highlighted': this.isHighlighted,
     })}" data-id="${this.id}">
   <span class="file__name">${this.markSearch(search)}</span>
